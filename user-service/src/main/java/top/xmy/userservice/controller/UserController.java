@@ -1,16 +1,21 @@
 package top.xmy.userservice.controller;
 
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import top.xmy.userservice.Service.UserService;
+import org.springframework.web.bind.annotation.*;
 
+import top.xmy.userservice.config.XmyProperties;
+import top.xmy.userservice.entity.User;
+import top.xmy.userservice.entity.UserVO;
+import top.xmy.userservice.service.UserService;
+@Slf4j
 @RestController
 @RequestMapping("/user")
+@RefreshScope
 public class UserController {
     @GetMapping("/user")
     public String getUser(@RequestParam String username) {
@@ -18,9 +23,22 @@ public class UserController {
     }
     @Autowired
     private UserService userService;
+//在user-service 中，使用MP 访问数据库，提供/user/1这样的端点
+    @Resource
+   private XmyProperties xmyProperties;
+//    @GetMapping("/{id}")
+//    public UserVO etUserById(@PathVariable Integer id) {
+//           return  userService.findById(id);
+//    }
+@GetMapping("/{id}")
+public ResponseEntity<?> getUser(@PathVariable Integer id) {
 
-    @GetMapping("/ask-ai")
-    public String askAI(@RequestParam String question) {
-        return userService.askAI(question);
+    if (xmyProperties.getServiceFlag()) {
+        UserVO user = userService.findById(id);
+        return ResponseEntity.ok(user);
+    } else {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("用户服务正在维护中，请稍后。。。");
     }
+}
 }
