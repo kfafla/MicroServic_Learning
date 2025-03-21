@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: dev
+  cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8888
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - gateway
