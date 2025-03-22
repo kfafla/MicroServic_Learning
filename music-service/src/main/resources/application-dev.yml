@@ -1,0 +1,33 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/share?useUnicode=true&characterEncoding=utf-8&userSSL=false&allowMultiQueries=true
+    username: root
+    password: ymx1205
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # 开启服务发现
+      routes:
+        - id: music_route
+          order: 1
+          uri: lb://music_service
+          predicates:
+            - Path=/api/speech/**
+          filters:
+              - StripPrefix=1 # 去掉匹配路径的前缀
+              - name: TimeBasedAccessFilter
+    sentinel:
+      filter:
+        enabled: true
+      transport:
+        port: 8719
+        dashboard: localhost:8888
+      scg:
+        fallback:
+          mode: response
+          response-status: 500
+          response-body: '{"code":500,"msg":"网关流量超量！"}'

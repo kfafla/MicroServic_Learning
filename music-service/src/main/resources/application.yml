@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: dev
+  cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8888
+  application:
+    name: music-service
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 2MB
+
+aliyun:
+  appkey: H6M4E5fDyK0L9ien
+  access-token: 2879832251d04332944f769b831b5557
+debug: true
