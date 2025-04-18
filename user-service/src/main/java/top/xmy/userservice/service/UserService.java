@@ -14,6 +14,14 @@ public class UserService {
 
     public UserVO findById(Integer id) {
         User user = userMapper.selectById(id);
-        return new UserVO(user.getId(), user.getUserName(), user.getAvatarUrl());
+        return new UserVO(user.getId(), user.getUserName(), user.getAvatarUrl(),user.getBonus());
+    }
+
+    public void addBonus(int userId,int bonus) {
+        User user = userMapper.selectById(userId);
+        if(user!= null) {
+            user.setBonus(user.getBonus() + bonus);
+            userMapper.updateById(user);
+        }
     }
 }

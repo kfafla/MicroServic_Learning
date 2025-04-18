@@ -1,5 +1,6 @@
 package top.xmy.userservice.controller;
 
+import com.alibaba.nacos.api.model.v2.Result;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,11 @@ public ResponseEntity<?> getUser(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                 .body("用户服务正在维护中，请稍后。。。");
     }
+}
+
+@PostMapping("/user/addBonus")
+    public Result<String> addBonus(@RequestParam Integer userId,@RequestParam Integer bonus){
+     userService.addBonus(userId,bonus);
+     return Result.success("新增成功！");
 }
 }

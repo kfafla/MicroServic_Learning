@@ -3,6 +3,15 @@ package top.xmy.userservice.entity;
 public class UserVO {
     private Integer id;
 
+    public Integer getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(Integer bonus) {
+        this.bonus = bonus;
+    }
+
+    private Integer bonus;
     public String getName() {
         return name;
     }
@@ -30,9 +39,10 @@ public class UserVO {
     private String name;
     private String avatarUrl;
 
-    public UserVO(Integer id, String name, String avatarUrl) {
+    public UserVO(Integer id, String name, String avatarUrl,Integer bonus) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
+        this.bonus = bonus;
     }
 }
